@@ -1,4 +1,4 @@
-import 'package:tp_flutter_5al/model/post.dart';
+import '../model/post.dart';
 
 abstract class PostsDataSource {
   Future<List<Post>> getAllPosts();
