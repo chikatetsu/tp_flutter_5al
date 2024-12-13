@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tp_flutter_5al/screen/post_detail_screen.dart';
 
 import '../shared/model/post.dart';
 import 'post_bloc/posts_bloc.dart';
@@ -47,7 +48,7 @@ class _PostScreenState extends State<PostScreen> {
       },
       child: ListView.separated(
         itemCount: posts.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 20),
+        separatorBuilder: (context, index) => const SizedBox(height: 10),
         itemBuilder: (context, index) {
           final post = posts[index];
           return ListTile(
@@ -61,8 +62,10 @@ class _PostScreenState extends State<PostScreen> {
 
   void _getAllPosts() {
     final postBloc = context.read<PostBloc>();
-    postBloc.add(GetAllPosts());
+    postBloc.add(const GetAllPosts());
   }
 
-  void _onPostTap(BuildContext context, Post post) {}
+  void _onPostTap(BuildContext context, Post post) {
+    PostDetailScreen.navigateTo(context, post);
+  }
 }

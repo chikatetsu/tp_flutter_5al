@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tp_flutter_5al/post_screen/post_bloc/posts_bloc.dart';
 import 'package:tp_flutter_5al/post_screen/post_screen.dart';
 
+import 'screen/post_detail_screen.dart';
+import 'shared/model/post.dart';
 import 'shared/service/fake_post_data_source.dart';
 import 'shared/service/post_repository.dart';
 
@@ -24,8 +26,18 @@ class MyApp extends StatelessWidget {
         create: (context) => PostBloc(
           postsRepository: context.read<PostRepository>()
         ),
-        child: const MaterialApp(
-          home: PostScreen()
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: const PostScreen(),
+          onGenerateRoute: (routeSettings) {
+            final argument = routeSettings.arguments;
+            if (routeSettings.name == 'postDetail' && argument is Post) {
+              return MaterialPageRoute(
+                builder: (context) => PostDetailScreen(post: argument)
+              );
+            }
+            return null;
+          },
         )
       )
     );
