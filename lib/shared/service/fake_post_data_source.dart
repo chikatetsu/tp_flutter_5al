@@ -1,8 +1,8 @@
-import 'package:tp_flutter_5al/shared/service/posts_data_source.dart';
+import 'package:tp_flutter_5al/shared/service/post_data_source.dart';
 
 import '../model/post.dart';
 
-class FakePostsDataSource extends PostsDataSource {
+class FakePostDataSource extends PostDataSource {
   final List<Post> _fakePosts = const [
     Post(id: '1', title: 'Post 1', description: 'Description of Post 1'),
     Post(id: '2', title: 'Post 2', description: 'Description of Post 2'),
