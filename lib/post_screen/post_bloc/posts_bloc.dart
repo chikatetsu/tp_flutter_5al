@@ -1,8 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:tp_flutter_5al/shared/service/post_repository.dart';
 
 import '../../shared/model/post.dart';
+import '../../shared/service/post_repository.dart';
 
 part 'posts_event.dart';
 part 'posts_state.dart';

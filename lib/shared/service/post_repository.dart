@@ -1,6 +1,5 @@
-import 'package:tp_flutter_5al/shared/service/post_data_source.dart';
-
 import '../model/post.dart';
+import 'post_data_source.dart';
 
 class PostRepository {
   final PostDataSource postDataSource;
