@@ -15,10 +15,7 @@ class PostState {
     this.posts = const []
   });
 
-  PostState copyWith({
-    PostStatus? status,
-    List<Post>? posts
-  }) {
+  PostState copyWith({PostStatus? status, List<Post>? posts}) {
     return PostState(
       status: status ?? this.status,
       posts: posts ?? List.from(this.posts),

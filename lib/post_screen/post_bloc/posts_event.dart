@@ -9,6 +9,12 @@ class GetAllPosts extends PostEvent {
   const GetAllPosts();
 }
 
+class GetPostById extends PostEvent {
+  final int id;
+
+  const GetPostById(this.id);
+}
+
 class CreatePost extends PostEvent {
   final Post post;
 

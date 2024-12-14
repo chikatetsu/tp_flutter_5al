@@ -21,18 +21,15 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: Text('${state.status}')
-          ),
-          body: switch (state.status) {
+    return Scaffold(
+      body: BlocBuilder<PostBloc, PostState>(
+        builder: (context, state) {
+          return switch (state.status) {
             PostStatus.loading || PostStatus.initial => _buildLoading(context),
             PostStatus.success => _buildSuccess(context, state.posts),
-          },
-        );
-      }
+          };
+        }
+      )
     );
   }
 
@@ -73,7 +70,7 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void _createPost(BuildContext context) {
-    Post post = const Post(id: '456', title: 'Nouveau post', description: 'description du nouveau post');
+    Post post = const Post(id: 456, title: 'Nouveau post', description: 'description du nouveau post');
     context.read<PostBloc>().add(CreatePost(post));
   }
 
