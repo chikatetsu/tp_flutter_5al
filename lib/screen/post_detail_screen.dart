@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:tp_flutter_5al/screen/post_edition.dart';
 
 import '../shared/bloc/post_bloc/posts_bloc.dart';
 import '../shared/dto/update_post_dto.dart';
@@ -47,7 +48,15 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           },
           floatingActionButton: FloatingActionButton(
             heroTag: 'editPost',
-            onPressed: () => _editPost(context, 'Edited post', 'Description du post édité'),
+            onPressed: () => {
+              showPostEditionDialog(
+                context: context,
+                dialogTitle: 'Modification du post',
+                onConfirm: _editPost,
+                title: _post.title,
+                description: _post.description
+              )
+            },
             child: const Icon(Icons.edit),
           ),
         );
