@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tp_flutter_5al/screen/post_detail_screen.dart';
+import 'package:tp_flutter_5al/shared/dto/create_post_dto.dart';
 
 import '../shared/model/post.dart';
 import 'post_bloc/posts_bloc.dart';
@@ -59,9 +60,61 @@ class _PostScreenState extends State<PostScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'createNewPost',
-        onPressed: () => _createPost(context),
+        onPressed: () => _showDialog(context),
         child: const Icon(Icons.add)
       )
+    );
+  }
+
+  void _showDialog(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    String title = '';
+    String description = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Nouveau post'),
+          content: Form(
+            key: formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Titre'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez préciser le titre du post';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => title = value!
+                ),
+                TextFormField(
+                  decoration: const InputDecoration(labelText: 'Description'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Veuillez préciser la description du post';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) => description = value!
+                )
+              ]
+            )
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Annuler')
+            ),
+            ElevatedButton(
+              onPressed: () => _createPost(context, title, description),
+              child: const Text('Confirmer')
+            )
+          ],
+        );
+      }
     );
   }
 
@@ -69,9 +122,12 @@ class _PostScreenState extends State<PostScreen> {
     context.read<PostBloc>().add(const GetAllPosts());
   }
 
-  void _createPost(BuildContext context) {
-    Post post = const Post(id: 456, title: 'Nouveau post', description: 'description du nouveau post');
-    context.read<PostBloc>().add(CreatePost(post));
+  void _createPost(BuildContext context, String title, String description) {
+    CreatePostDto dto = CreatePostDto(
+      title: title,
+      description: description
+    );
+    context.read<PostBloc>().add(CreatePost(dto));
   }
 
   void _onPostTap(BuildContext context, Post post) {

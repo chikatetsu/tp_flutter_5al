@@ -1,3 +1,5 @@
+import '../dto/create_post_dto.dart';
+import '../dto/update_post_dto.dart';
 import '../model/post.dart';
 import 'post_data_source.dart';
 
@@ -12,11 +14,11 @@ class PostRepository {
     return postDataSource.getAllPosts();
   }
 
-  Future<Post> createPost(Post postToAdd) async {
-    return postDataSource.createPost(postToAdd);
+  Future<Post> createPost(CreatePostDto dto) async {
+    return postDataSource.createPost(dto);
   }
 
-  Future<Post> updatePost(Post newPost) async {
-    return postDataSource.updatePost(newPost);
+  Future<Post> updatePost(UpdatePostDto dto) async {
+    return postDataSource.updatePost(dto);
   }
 }

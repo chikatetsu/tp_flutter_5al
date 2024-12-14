@@ -1,3 +1,5 @@
+import '../dto/create_post_dto.dart';
+import '../dto/update_post_dto.dart';
 import '../model/post.dart';
 import 'post_data_source.dart';
 
@@ -15,24 +17,26 @@ class FakePostDataSource extends PostDataSource {
   }
 
   @override
-  Future<Post> getPostById(int id) async {
+  Future<Post> createPost(CreatePostDto dto) async {
     await Future.delayed(const Duration(seconds: 1));
-    final post = _fakePosts.firstWhere((post) => post.id == id);
-    return post;
-  }
-
-  @override
-  Future<Post> createPost(Post postToAdd) async {
-    await Future.delayed(const Duration(seconds: 1));
+    int lastId = _fakePosts.length + 1;
+    Post postToAdd = Post(
+      id: lastId,
+      title: dto.title,
+      description: dto.description
+    );
     _fakePosts.add(postToAdd);
     return _fakePosts.last;
   }
 
   @override
-  Future<Post> updatePost(Post newPost) async {
+  Future<Post> updatePost(UpdatePostDto dto) async {
     await Future.delayed(const Duration(seconds: 1));
-    int indexToUpdate = _fakePosts.indexWhere((post) => post.id == newPost.id);
-    _fakePosts[indexToUpdate] = newPost;
+    int indexToUpdate = _fakePosts.indexWhere((post) => post.id == dto.id);
+    _fakePosts[indexToUpdate] = _fakePosts[indexToUpdate].copyWith(
+      title: dto.title,
+      description: dto.description
+    );
     return _fakePosts[indexToUpdate];
   }
 }

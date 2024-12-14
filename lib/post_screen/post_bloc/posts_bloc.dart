@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
+import '../../shared/dto/create_post_dto.dart';
+import '../../shared/dto/update_post_dto.dart';
 import '../../shared/model/post.dart';
 import '../../shared/service/post_repository.dart';
 
@@ -30,8 +32,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   void _onCreatePost(CreatePost event, Emitter<PostState> emit) async {
     emit(state.copyWith(status: PostStatus.loading));
     
-    final newPost = event.post;
-    await postsRepository.createPost(newPost);
+    final dto = event.dto;
+    final newPost = await postsRepository.createPost(dto);
     
     emit(state.copyWith(
       status: PostStatus.success,
@@ -42,8 +44,8 @@ class PostBloc extends Bloc<PostEvent, PostState> {
   void _onUpdatePost(UpdatePost event, Emitter<PostState> emit) async {
     emit(state.copyWith(status: PostStatus.loading));
 
-    final newPost = event.post;
-    await postsRepository.updatePost(newPost);
+    final dto = event.dto;
+    await postsRepository.updatePost(dto);
     final updatedPosts = await postsRepository.getAllPosts();
 
     emit(state.copyWith(

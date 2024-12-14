@@ -9,20 +9,14 @@ class GetAllPosts extends PostEvent {
   const GetAllPosts();
 }
 
-class GetPostById extends PostEvent {
-  final int id;
-
-  const GetPostById(this.id);
-}
-
 class CreatePost extends PostEvent {
-  final Post post;
+  final CreatePostDto dto;
 
-  const CreatePost(this.post);
+  const CreatePost(this.dto);
 }
 
 class UpdatePost extends PostEvent {
-  final Post post;
+  final UpdatePostDto dto;
 
-  const UpdatePost(this.post);
+  const UpdatePost(this.dto);
 }

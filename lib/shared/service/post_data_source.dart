@@ -1,8 +1,9 @@
+import '../dto/create_post_dto.dart';
+import '../dto/update_post_dto.dart';
 import '../model/post.dart';
 
 abstract class PostDataSource {
   Future<List<Post>> getAllPosts();
-  Future<Post> getPostById(int id);
-  Future<Post> createPost(Post postToAdd);
-  Future<Post> updatePost(Post newPost);
+  Future<Post> createPost(CreatePostDto dto);
+  Future<Post> updatePost(UpdatePostDto dto);
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../post_screen/post_bloc/posts_bloc.dart';
+import '../shared/dto/update_post_dto.dart';
 import '../shared/model/post.dart';
 
 class PostDetailScreen extends StatefulWidget {
@@ -82,10 +83,11 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   }
 
   void _editPost(BuildContext context) {
-    _post = _post.copyWith(
-        title: 'Edited post',
-        description: 'description du post édité'
+    UpdatePostDto dto = UpdatePostDto(
+      id: _post.id,
+      title: 'Edited post',
+      description: 'description du post édité'
     );
-    context.read<PostBloc>().add(UpdatePost(_post));
+    context.read<PostBloc>().add(UpdatePost(dto));
   }
 }
