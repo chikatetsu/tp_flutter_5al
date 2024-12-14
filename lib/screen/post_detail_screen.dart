@@ -77,16 +77,16 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   Widget _buildDescriptionSuccess(BuildContext context) {
     return Padding(
-        padding: const EdgeInsets.all(20),
-        child: Text(_post.description)
+      padding: const EdgeInsets.all(20),
+      child: Text(_post.description)
     );
   }
 
-  void _editPost(BuildContext context) {
+  void _editPost(BuildContext context, String title, String description) {
     UpdatePostDto dto = UpdatePostDto(
       id: _post.id,
-      title: 'Edited post',
-      description: 'description du post édité'
+      title: title,
+      description: description
     );
     context.read<PostBloc>().add(UpdatePost(dto));
   }

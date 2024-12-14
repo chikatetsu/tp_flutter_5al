@@ -67,7 +67,7 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   void _showDialog(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
     String title = '';
     String description = '';
 
@@ -79,40 +79,63 @@ class _PostScreenState extends State<PostScreen> {
           content: Form(
             key: formKey,
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 TextFormField(
                   decoration: const InputDecoration(labelText: 'Titre'),
-                  validator: (value) {
+                  validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez préciser le titre du post';
                     }
                     return null;
                   },
-                  onSaved: (value) => title = value!
+                  onChanged: (String? value) => {
+                    if (value != null) {
+                      title = value
+                    }
+                  }
                 ),
                 TextFormField(
-                  decoration: const InputDecoration(labelText: 'Description'),
-                  validator: (value) {
+                  decoration: const InputDecoration(
+                    labelText: 'Description',
+                    alignLabelWithHint: true
+                  ),
+                  maxLines: 5,
+                  validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return 'Veuillez préciser la description du post';
                     }
                     return null;
                   },
-                  onSaved: (value) => description = value!
+                  onSaved: (String? value) => {
+                    if (value != null) {
+                      description = value
+                    }
+                  }
+                ),
+                const SizedBox(height: 20),
+                Center(
+                  child: Row(
+                    children: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: const Text('Annuler')
+                      ),
+                      ElevatedButton(
+                        onPressed: () => {
+                          if (formKey.currentState!.validate()) {
+                            formKey.currentState?.save(),
+                            _createPost(context, title, description)
+                          }
+                        },
+                        child: const Text('Confirmer')
+                      ),
+                    ],
+                  ),
                 )
               ]
-            )
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.of(context).pop(),
-              child: const Text('Annuler')
             ),
-            ElevatedButton(
-              onPressed: () => _createPost(context, title, description),
-              child: const Text('Confirmer')
-            )
-          ],
+          ),
         );
       }
     );
@@ -128,6 +151,7 @@ class _PostScreenState extends State<PostScreen> {
       description: description
     );
     context.read<PostBloc>().add(CreatePost(dto));
+    Navigator.of(context).pop();
   }
 
   void _onPostTap(BuildContext context, Post post) {
