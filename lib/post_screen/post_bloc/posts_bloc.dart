@@ -31,13 +31,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
     emit(state.copyWith(status: PostStatus.loading));
     
     final newPost = event.post;
-    final posts = state.posts;
     await postsRepository.createPost(newPost);
-    posts.add(newPost);
     
     emit(state.copyWith(
       status: PostStatus.success,
-      posts: posts,
+      posts: List.from(state.posts)..add(newPost),
     ));
   }
   
@@ -46,11 +44,11 @@ class PostBloc extends Bloc<PostEvent, PostState> {
 
     final newPost = event.post;
     await postsRepository.updatePost(newPost);
-    final posts = await postsRepository.getAllPosts();
+    final updatedPosts = await postsRepository.getAllPosts();
 
     emit(state.copyWith(
       status: PostStatus.success,
-      posts: posts,
+      posts: updatedPosts
     ));
   }
 }

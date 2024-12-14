@@ -21,7 +21,7 @@ class PostState {
   }) {
     return PostState(
       status: status ?? this.status,
-      posts: posts ?? this.posts
+      posts: posts ?? List.from(this.posts),
     );
   }
 }

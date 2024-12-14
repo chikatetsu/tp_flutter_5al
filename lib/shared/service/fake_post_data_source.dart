@@ -2,7 +2,7 @@ import '../model/post.dart';
 import 'post_data_source.dart';
 
 class FakePostDataSource extends PostDataSource {
-  final List<Post> _fakePosts = const [
+  final List<Post> _fakePosts = [
     Post(id: '1', title: 'Post 1', description: 'Description of Post 1'),
     Post(id: '2', title: 'Post 2', description: 'Description of Post 2'),
     Post(id: '3', title: 'Post 3', description: 'Description of Post 3')

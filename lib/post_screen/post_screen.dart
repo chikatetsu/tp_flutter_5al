@@ -21,17 +21,18 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<PostBloc, PostState>(
-        builder: (context, state) {
-          return Expanded(
-            child: switch (state.status) {
-              PostStatus.initial || PostStatus.loading => _buildLoading(context),
-              PostStatus.success => _buildSuccess(context, state.posts),
-            }
-          );
-        }
-      )
+    return BlocBuilder<PostBloc, PostState>(
+      builder: (context, state) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text('${state.status}')
+          ),
+          body: switch (state.status) {
+            PostStatus.loading || PostStatus.initial => _buildLoading(context),
+            PostStatus.success => _buildSuccess(context, state.posts),
+          },
+        );
+      }
     );
   }
 
@@ -42,27 +43,38 @@ class _PostScreenState extends State<PostScreen> {
   }
 
   Widget _buildSuccess(BuildContext context, List<Post> posts) {
-    return RefreshIndicator(
-      onRefresh: () async {
-        _getAllPosts();
-      },
-      child: ListView.separated(
-        itemCount: posts.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 10),
-        itemBuilder: (context, index) {
-          final post = posts[index];
-          return ListTile(
-            title: Text(post.title),
-            onTap: () => _onPostTap(context, post),
-          );
+    return Scaffold(
+      body: RefreshIndicator(
+        onRefresh: () async {
+          _getAllPosts();
         },
+        child: ListView.separated(
+          itemCount: posts.length,
+          separatorBuilder: (context, index) => const SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            final post = posts[index];
+            return ListTile(
+              title: Text(post.title),
+              onTap: () => _onPostTap(context, post),
+            );
+          }
+        )
       ),
+      floatingActionButton: FloatingActionButton(
+        heroTag: 'createNewPost',
+        onPressed: () => _createPost(context),
+        child: const Icon(Icons.add)
+      )
     );
   }
 
   void _getAllPosts() {
-    final postBloc = context.read<PostBloc>();
-    postBloc.add(const GetAllPosts());
+    context.read<PostBloc>().add(const GetAllPosts());
+  }
+
+  void _createPost(BuildContext context) {
+    Post post = const Post(id: '456', title: 'Nouveau post', description: 'description du nouveau post');
+    context.read<PostBloc>().add(CreatePost(post));
   }
 
   void _onPostTap(BuildContext context, Post post) {
