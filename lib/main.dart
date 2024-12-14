@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:tp_flutter_5al/post_screen/post_bloc/posts_bloc.dart';
-import 'package:tp_flutter_5al/post_screen/post_screen.dart';
+import 'package:tp_flutter_5al/screen/post_screen.dart';
 
 import 'screen/post_detail_screen.dart';
+import 'shared/bloc/post_bloc/posts_bloc.dart';
 import 'shared/model/post.dart';
 import 'shared/service/fake_post_data_source.dart';
 import 'shared/service/post_repository.dart';

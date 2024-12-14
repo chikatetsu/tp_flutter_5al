@@ -1,10 +1,10 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-import '../../shared/dto/create_post_dto.dart';
-import '../../shared/dto/update_post_dto.dart';
-import '../../shared/model/post.dart';
-import '../../shared/service/post_repository.dart';
+import '../../dto/create_post_dto.dart';
+import '../../dto/update_post_dto.dart';
+import '../../model/post.dart';
+import '../../service/post_repository.dart';
 
 part 'posts_event.dart';
 part 'posts_state.dart';

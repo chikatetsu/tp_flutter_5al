@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../post_screen/post_bloc/posts_bloc.dart';
+import '../shared/bloc/post_bloc/posts_bloc.dart';
 import '../shared/dto/update_post_dto.dart';
 import '../shared/model/post.dart';
 
@@ -47,7 +47,7 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
           },
           floatingActionButton: FloatingActionButton(
             heroTag: 'editPost',
-            onPressed: () => _editPost(context),
+            onPressed: () => _editPost(context, 'Edited post', 'Description du post édité'),
             child: const Icon(Icons.edit),
           ),
         );
@@ -83,10 +83,14 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
   }
 
   void _editPost(BuildContext context, String title, String description) {
-    UpdatePostDto dto = UpdatePostDto(
-      id: _post.id,
+    _post = _post.copyWith(
       title: title,
       description: description
+    );
+    UpdatePostDto dto = UpdatePostDto(
+      id: _post.id,
+      title: _post.title,
+      description: _post.description
     );
     context.read<PostBloc>().add(UpdatePost(dto));
   }

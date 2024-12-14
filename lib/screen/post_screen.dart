@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:tp_flutter_5al/screen/post_detail_screen.dart';
 import 'package:tp_flutter_5al/shared/dto/create_post_dto.dart';
 
+import '../shared/bloc/post_bloc/posts_bloc.dart';
 import '../shared/model/post.dart';
-import 'post_bloc/posts_bloc.dart';
 
 class PostScreen extends StatefulWidget {
   const PostScreen({super.key});
