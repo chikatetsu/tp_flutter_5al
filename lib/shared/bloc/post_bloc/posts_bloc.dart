@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:tp_flutter_5al/shared/exception/post_exception.dart';
 
 import '../../dto/create_post_dto.dart';
 import '../../dto/update_post_dto.dart';

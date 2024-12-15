@@ -23,15 +23,18 @@ class _PostScreenState extends State<PostScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<PostBloc, PostState>(
-        builder: (context, state) {
-          return switch (state.status) {
-            PostStatus.loading || PostStatus.initial => _buildLoading(context),
-            PostStatus.success => _buildSuccess(context, state.posts),
-          };
-        }
-      )
+    return BlocListener<PostBloc, PostState>(
+      listener: _onError,
+      child: Scaffold(
+        body: BlocBuilder<PostBloc, PostState>(
+          builder: (context, state) {
+            return switch (state.status) {
+              PostStatus.loading || PostStatus.initial => _buildLoading(context),
+              PostStatus.success || PostStatus.error => _buildSuccess(context, state.posts),
+            };
+          }
+        )
+      ),
     );
   }
 
@@ -49,7 +52,8 @@ class _PostScreenState extends State<PostScreen> {
         },
         child: ListView.separated(
           itemCount: posts.length,
-          separatorBuilder: (context, index) => const SizedBox(height: 10),
+          separatorBuilder: (context, index) =>
+          const SizedBox(height: 10),
           itemBuilder: (context, index) {
             final post = posts[index];
             return ListTile(
@@ -61,14 +65,25 @@ class _PostScreenState extends State<PostScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         heroTag: 'createNewPost',
-        onPressed: () => showPostEditionDialog(
-          context: context,
-          dialogTitle: 'Nouveau post',
-          onConfirm: _createPost
-        ),
+        onPressed: () =>
+          showPostEditionDialog(
+            context: context,
+            dialogTitle: 'Nouveau post',
+            onConfirm: _createPost
+          ),
         child: const Icon(Icons.add)
       )
     );
+  }
+
+  void _onError(BuildContext context, PostState state) {
+    if (state.status == PostStatus.error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.exception.message),
+        ),
+      );
+    }
   }
 
   void _getAllPosts() {

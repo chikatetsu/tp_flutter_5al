@@ -33,35 +33,48 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<PostBloc, PostState>(
-      builder: (context, state) {
-        return Scaffold(
-          appBar: AppBar(
-            title: switch (state.status) {
-              PostStatus.loading || PostStatus.initial => _buildTitleLoading(context),
-              PostStatus.success => _buildTitleSuccess(context),
-            }
-          ),
-          body: switch (state.status) {
-            PostStatus.loading || PostStatus.initial => _buildDescriptionLoading(context),
-            PostStatus.success => _buildDescriptionSuccess(context),
-          },
-          floatingActionButton: FloatingActionButton(
-            heroTag: 'editPost',
-            onPressed: () => {
-              showPostEditionDialog(
-                context: context,
-                dialogTitle: 'Modification du post',
-                onConfirm: _editPost,
-                title: _post.title,
-                description: _post.description
-              )
+    return BlocListener<PostBloc, PostState>(
+      listener: _onError,
+      child: BlocBuilder<PostBloc, PostState>(
+        builder: (context, state) {
+          return Scaffold(
+            appBar: AppBar(
+              title: switch (state.status) {
+                PostStatus.loading || PostStatus.initial => _buildTitleLoading(context),
+                PostStatus.success || PostStatus.error => _buildTitleSuccess(context)
+              }
+            ),
+            body: switch (state.status) {
+              PostStatus.loading || PostStatus.initial => _buildDescriptionLoading(context),
+              PostStatus.success || PostStatus.error => _buildDescriptionSuccess(context)
             },
-            child: const Icon(Icons.edit),
-          ),
-        );
-      },
+            floatingActionButton: FloatingActionButton(
+              heroTag: 'editPost',
+              onPressed: () => {
+                showPostEditionDialog(
+                  context: context,
+                  dialogTitle: 'Modification du post',
+                  onConfirm: _editPost,
+                  title: _post.title,
+                  description: _post.description
+                )
+              },
+              child: const Icon(Icons.edit),
+            ),
+          );
+        },
+      ),
     );
+  }
+
+  void _onError(BuildContext context, PostState state) {
+    if (state.status == PostStatus.error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(state.exception.message),
+        ),
+      );
+    }
   }
 
   Widget _buildTitleLoading(BuildContext context) {
@@ -73,7 +86,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       ),
     );
   }
-
   Widget _buildTitleSuccess(BuildContext context) {
     return Text(_post.title);
   }
@@ -83,7 +95,6 @@ class _PostDetailScreenState extends State<PostDetailScreen> {
       child: CircularProgressIndicator(),
     );
   }
-
   Widget _buildDescriptionSuccess(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(20),
